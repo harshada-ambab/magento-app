@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<?php
+$blockObj= $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\Price');
+?>
+
+<div id="header-mpdal" class="container">
+
+<div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}'>
+    
+<?php
+
+
+   $datacollection=$block->BankData(); 
+   $a = array();   
+    foreach ($datacollection as $data) {
+        $bankname = $data['bank_name'];
+        
+?>
+
+<div data-role="collapsible" id="row">
+
+        <div data-role="trigger">
+           <span><?php echo strtoupper($bankname);?></span>
+        </div>
+    </div>
+
+    <div data-role="content" class="content">
+        <table id="customers">
+  
+    <tr>
+      
+      <th scope="col">EMI Plan</th>
+      <th scope="col">Interest(Pa)</th>
+      <th scope="col">Total Cost</th>
+    </tr>
+ 
+  
+    <?php
+        $datacollection1=$block->BankDetails($bankname);
+        foreach ($datacollection1 as $res){
+            $var = $res['rate_of_int'];
+            $rate = $var/(12*100);
+            $term = $res['month'];
+            $amount = $blockObj->getProductPrice();
+            $EMI = $block->EmiCalculation($rate,$term,$amount);
+            $NewEMI = ceil($EMI);
+            array_push($a,$NewEMI);
+    ?>
+    <tr>
+      
+      <td><?php echo $NewEMI.'x'.$term.'m'; ?></td>
+      <td><?php echo $res['rate_of_int'].'%'; ?></td>
+      <td><?php echo ceil($amount).' '.'Rs'; ?></td>
+    </tr>
+    <?php
+    }
+?>
+
+</table>
+</div>
+<?php
+    }
+    
+?>
+   
+</div>
+</div>
+</body>
+</html>
+<?php if ($block->canShowBlock()): ?>
+    <a href="#" id="click-header">
+    Emi Starts From <?php echo min($a).' '.'Rs'; ?>
+</a>
+<?php endif; ?>
+
+
+<!-- <script>
+    require(
+    [
+        'jquery',
+        'Magento_Ui/js/modal/modal'
+    ],
+    function(
+        $,
+        modal
+    ) {
+        var options = {
+            type: 'popup',
+            responsive: true,
+            innerScroll: true,
+            title: '',
+            buttons: [{
+                text: $.mage.__('Close'),
+                class: '',
+                click: function () {
+                    this.closeModal();
+                }
+            }]
+        };
+
+        var popup = modal(options, $('#header-mpdal'));
+        $("#click-header").on('click',function(){ 
+            $("#header-mpdal").modal("openModal");
+        });
+
+    }
+);
+</script> -->
