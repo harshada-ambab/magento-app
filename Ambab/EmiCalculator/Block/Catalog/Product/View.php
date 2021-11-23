@@ -1,15 +1,5 @@
 <?php
-// namespace Ambab\EmiCalc\Block\Catalog\Product;
-// use Magento\Catalog\Block\Product\Context;
-// use Magento\Catalog\Block\Product\AbstractProduct;
 
-// class View extends AbstractProduct
-// {
-//     public function __construct(Context $context, array $data)
-//     {
-//         parent::__construct($context, $data);
-//     }
-// }
 
 namespace Ambab\EmiCalculator\Block\Catalog\Product;
 use Magento\Catalog\Block\Product\Context;
@@ -37,37 +27,43 @@ public function __construct(ResourceConnection $resourceConnection,
     parent::__construct($context, $data);
 }
 
+
+// Enable Module
 public function canShowBlock()
 {
     return $this->_dataHelper->isModuleEnabled();
 }
-public function Collection(){
 
-    return $collection = $this->_GridFactory->create()->getCollection();
-}
+//Get Unique Bank Name
 public function BankData(){
-    $collection = $this->_GridFactory->create()->getCollection();
-    $tableName = $this->resourceConnection->getTableName('bank_details');
-    $connection = $this->resourceConnection->getConnection();
-    $query = $connection->select()->from($tableName,['bank_name'])->distinct(true);
-    return $records = $connection->fetchAll($query);
-    //$query = "SELECT COUNT(*),bank_name FROM $tableName GROUP BY bank_name HAVING 
-    //COUNT(*) >= 1";
-    //$result = $connection->fetchAll($query);
 
+     return $collection = $this->_GridFactory->create()->getCollection()
+     ->distinct(true)
+     ->addFieldToSelect('bank_name')
+     ->load();
 }
+
+
+// Bank Details for Unique Bank Name
 public function BankDetails($bankname){
 
-    $tableName = $this->resourceConnection->getTableName('bank_details');
-    $connection = $this->resourceConnection->getConnection();
-    $query = $connection->select()->from($tableName)->where('bank_name=?',$bankname);
-    return $records = $connection->fetchAll($query);
-    // $query = "SELECT * FROM $tableName where bank_name = '$bankname'";
-    // return $res = $connection->fetchAll($query);
-
+    return $collection = $this->_GridFactory->create()->getCollection()
+    ->addFieldToFilter('bank_name', ['like'=>$bankname])
+    ->load();
+    
 }
+
+
+// Emi, TotalPrice, InteresAmount Calculation
 public function EmiCalculation($rate,$term,$amount){
- $EMI = $amount * $rate * (pow(1 + $rate, $term)/ (pow(1 + $rate, $term) - 1));
- return $EMI;
+    $emiarr=array();
+    $rateofint = $rate/(12*100);
+    $EMI = $amount * $rateofint * (pow(1 + $rateofint, $term)/ (pow(1 + $rateofint, $term) - 1));
+
+    $NewEMI = ceil($EMI);
+    $interest = $EMI*$term-$amount;
+    $totalPrice = $amount + $interest;
+    array_push($emiarr,$NewEMI,$interest,$totalPrice);
+    return $emiarr;
 }
 }

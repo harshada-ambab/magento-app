@@ -31,7 +31,7 @@ class Index extends \Magento\Backend\App\Action
     {
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_resultPageFactory->create();
-        $resultPage->setActiveMenu('Webkul_Grid::grid_list');
+        $resultPage->setActiveMenu('Emi_Module::grid_list');
         $resultPage->getConfig()->getTitle()->prepend(__('Bank Details'));
 
         return $resultPage;
@@ -44,6 +44,6 @@ class Index extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Webkul_Grid::grid_list');
+        return $this->_authorization->isAllowed('Emi_Module::grid_list');
     }
 }

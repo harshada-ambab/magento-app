@@ -10,17 +10,11 @@
             <tab>emi</tab>
             <resource>Emi_Module::module_config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>General Configuration</label>
+                <label>EMI Option</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Module Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <!-- <field id="display_text" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Display Text</label>
-                    <comment>This text will display on the frontend.</comment>
-                </field> -->
-                
+                </field>       
             </group>
         </section>
 

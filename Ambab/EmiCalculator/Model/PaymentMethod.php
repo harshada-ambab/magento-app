@@ -13,5 +13,5 @@ class PaymentMethod extends \Magento\Payment\Model\Method\AbstractMethod
      *
      * @var string
      */
-    protected $_code = 'testpayment';
+    protected $_code = 'emipayment';
 }

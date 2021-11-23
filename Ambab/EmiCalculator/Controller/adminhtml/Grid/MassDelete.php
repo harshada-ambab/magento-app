@@ -59,6 +59,6 @@ class MassDelete extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Webkul_Grid::row_data_delete');
+        return $this->_authorization->isAllowed('Emi_Module::row_data_delete');
     }
 }

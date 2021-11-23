@@ -52,6 +52,6 @@ class Save extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Webkul_Grid::save');
+        return $this->_authorization->isAllowed('Emi_Module::save');
     }
 }

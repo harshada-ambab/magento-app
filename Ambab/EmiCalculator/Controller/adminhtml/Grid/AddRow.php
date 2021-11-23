@@ -1,12 +1,5 @@
 <?php
-/**
- * Webkul Grid List Controller.
- * @category  Webkul
- * @package   Webkul_Grid
- * @author    Webkul
- * @copyright Copyright (c) 2010-2017 Webkul Software Private Limited (https://webkul.com)
- * @license   https://store.webkul.com/license.html
- */
+
 namespace Ambab\EmiCalculator\Controller\adminhtml\Grid;
 
 use Magento\Framework\Controller\ResultFactory;
@@ -66,6 +59,6 @@ class AddRow extends \Magento\Backend\App\Action
 
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Webkul_Grid::add_row');
+        return $this->_authorization->isAllowed('Emi_Module::add_row');
     }
 }

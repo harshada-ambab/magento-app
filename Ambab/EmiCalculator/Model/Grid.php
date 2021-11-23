@@ -86,7 +86,7 @@ class Grid extends \Magento\Framework\Model\AbstractModel implements GridInterfa
     }
 
 
-    public function setRateOfInt($rate_of_int)
+    public function setRateOfInt($a)
     {
         return $this->setData(self::Rate_Of_Int, $rate_of_int);
     }

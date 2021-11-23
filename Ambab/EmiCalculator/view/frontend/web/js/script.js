@@ -21,6 +21,7 @@ require(
             }]
         };
 
+        
         var popup = modal(options, $('#header-mpdal'));
         $("#click-header").on('click',function(){ 
             $("#header-mpdal").modal("openModal");

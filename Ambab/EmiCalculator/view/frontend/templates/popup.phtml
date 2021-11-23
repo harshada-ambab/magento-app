@@ -3,8 +3,9 @@
 
 <?php
 $blockObj= $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\Price');
-$blockh= $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View');
-$amount = $blockObj->getSubtotal();
+$blockview= $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View');
+$emiEnable = $blockview->canShowBlock();
+$amount = $blockObj->getOrdertotal();
 ?>
 
 <div id="header-mpdal" class="container">
@@ -13,10 +14,10 @@ $amount = $blockObj->getSubtotal();
     
 <?php
 
-   $datacollection=$blockh->BankData();  
+   $datacollection=$blockview->BankData();  
 
     foreach ($datacollection as $data) {
-        $bankname = $data['bank_name'];        
+        $bankname = $data->getBankName();        
 ?>
 
 <div data-role="collapsible" id="row">
@@ -33,26 +34,27 @@ $amount = $blockObj->getSubtotal();
       
       <th scope="col">EMI Plan</th>
       <th scope="col">Interest(Pa)</th>
-      <th scope="col">Total Cost</th>
+      <th scope="col">Order Price</th>
+      <th scope="col">Total Price</th>
     </tr>
  
   
     <?php
-        $datacollection1=$blockh->BankDetails($bankname);
+        $datacollection1=$blockview->BankDetails($bankname);
         foreach ($datacollection1 as $res){
-            $var = $res['rate_of_int'];
-            $rate = $var/(12*100);
-            $term = $res['month'];
-            $EMI = $blockh->EmiCalculation($rate,$term,$amount);
-            $NewEMI = ceil($EMI);
+            $rate = $res->getRateOfInt();
+            $term = $res->getMonth();
+            $emiarr = $blockview->EmiCalculation($rate,$term,$amount);
+            
             
             
     ?>
     <tr>
       
-      <td><?php echo $NewEMI.'x'.$term.'m'; ?></td>
-      <td><?php echo $res['rate_of_int'].'%'; ?></td>
+      <td><?php echo $emiarr[0].'x'.$term.'m'; ?></td>
+      <td><?php echo '('.ceil($emiarr[1]).'Rs'.')'.' '.$res->getMonth().'%'; ?></td>
       <td><?php echo ceil($amount).' '.'Rs'; ?></td>
+      <td><?php echo ceil($emiarr[2]).' '.'Rs'; ?></td>
     </tr>
     <?php
     }
@@ -69,3 +71,7 @@ $amount = $blockObj->getSubtotal();
 </div>
 
 </div>
+   
+<script type="text/javascript">
+    var Enable = <?php echo json_encode($emiEnable); ?>;
+</script>
